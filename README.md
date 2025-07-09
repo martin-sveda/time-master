@@ -1,1 +1,5 @@
-TimeMaster hobby project
+# TimeMaster hobby project
+
+Zkouším si zopakovat C++
+
+
