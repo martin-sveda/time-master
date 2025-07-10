@@ -15,10 +15,16 @@ OBJS := $(SRCS:$(SRC_DIR)/%.cpp=$(OBJ_DIR)/%.o)
 INCLUDES := -I$(INC_DIR) \
            -I$(PROJECT_ROOT)/components/time-sources/include \
            -I$(PROJECT_ROOT)/components/master-clock/include \
+		   -I$(PROJECT_ROOT)/components/timer/include \
+		   -I$(PROJECT_ROOT)/components/clock/include
+
 
 # Libraries
 LIBS := -L$(PROJECT_ROOT)/components/time-sources/lib -ltime-sources \
         -L$(PROJECT_ROOT)/components/master-clock/lib -lmaster-clock \
+		-L$(PROJECT_ROOT)/components/timer/lib -ltimer \
+		-L$(PROJECT_ROOT)/components/clock/lib -lclock
+
 
 # Flags
 CXXFLAGS += $(INCLUDES)
@@ -35,6 +41,7 @@ $(BIN): $(OBJS)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
+
 
 directories:
 	@mkdir -p $(OBJ_DIR) $(BIN_DIR)

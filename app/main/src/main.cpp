@@ -4,9 +4,8 @@
 #include <condition_variable>
 #include <chrono>
 
-#include "Clock.h"
-#include "Timer.h"
-
+#include "clock.h"
+#include "timer.h"
 
 
 int main() {

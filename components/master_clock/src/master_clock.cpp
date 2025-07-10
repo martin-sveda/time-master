@@ -1,13 +1,13 @@
 #include <iostream>
 #include <chrono>
 
-#include "../include/master-clock.h"
 #include "i_time_source.h"
+#include "master_clock.h"
 
-using namespace time_sources;
+namespace time_sources {
 
-
-MasterClock::MasterClock(ITimeSource* source) : timeSource(source) {
+MasterClock::MasterClock(ITimeSource* source) {
+    timeSource = source;
 }
 
 void MasterClock::setTimeSource(ITimeSource* source) {
@@ -22,4 +22,4 @@ void MasterClock::displayCurrentTime() {
 }
 
 
-
+}

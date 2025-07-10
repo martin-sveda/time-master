@@ -2,6 +2,10 @@
 
 #include <chrono>   
 
+
+namespace time_sources {
+    
+
 class ITimeSource;
 
 class MasterClock {
@@ -14,6 +18,7 @@ public:
     void displayCurrentTime();  
 };
 
+}
 
 
 
