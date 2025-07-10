@@ -1,6 +1,6 @@
 # Root Makefile
 COMPONENTS_DIR := components
-APPLICATIONS_DIR := applications
+APPLICATIONS_DIR := app
 
 # Compiler and flags
 CXX := g++
@@ -8,8 +8,8 @@ CXXFLAGS := -std=c++11 -Wall -Wextra
 
 
 # Directories
-COMPONENTS := time-sources master-clock
-APPLICATIONS := app
+COMPONENTS := time-sources master-clock timer clock
+APPLICATIONS := main
 
 # Export common variables for sub-makefiles
 export CXX CXXFLAGS 
