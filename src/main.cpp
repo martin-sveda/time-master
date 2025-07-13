@@ -10,7 +10,7 @@
 
 int main() {
     Clock clock;
-    Timer timer(clock);
+    Timer timer(clock, 10);
 
     // Create threads
     std::thread clockThread(&Clock::display, &clock);
@@ -28,5 +28,6 @@ int main() {
     clockThread.join();
 
     return 0;
+    
 }
 
