@@ -11,6 +11,7 @@
                 "${workspaceFolder}/src/main.cpp",
                 "${workspaceFolder}/src/clock/clock.cpp",
                 "${workspaceFolder}/src/timer/timer.cpp",
+                "${workspaceFolder}/src/time_sources/gps_time_source.cpp",
                 "-I${workspaceFolder}/include",
                 "-o",
                 "build/program"
@@ -27,6 +28,7 @@
                 "-std=c++11",
                 "${workspaceFolder}/src/clock/clock.cpp",
                 "${workspaceFolder}/src/timer/timer.cpp",
+                "${workspaceFolder}/src/time_sources/gps_time_source.cpp",
                 "-I${workspaceFolder}/include",
                 "${file}",
                 "-o",

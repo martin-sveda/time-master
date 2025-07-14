@@ -29,7 +29,7 @@ Timer::Timer(Clock& c, int interval) : clock(c), interval(interval) {};
 void Timer::run() {
     while (running) {
         std::this_thread::sleep_for(std::chrono::milliseconds(interval));
-        std::cout << "Timer tick: incrementing clock." << std::endl;
+        // std::cout << "Timer tick: incrementing clock." << std::endl;
         clock.increment();
     }
 }

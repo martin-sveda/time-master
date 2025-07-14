@@ -3,14 +3,27 @@
 #include <mutex>
 #include <condition_variable>
 #include <chrono>
+#include <iomanip>
 
 #include "clock/clock.h"
 #include "timer/timer.h"
+#include "time_sources/gps_time_source.h"
 
+
+using namespace time_sources;
 
 int main() {
     Clock clock;
-    Timer timer(clock, 10);
+    Timer timer(clock, 200);
+    GPSTimeSource gpsTimeSource;
+
+
+    // Display the GPS time source name
+    std::cout << "Using time source: " << gpsTimeSource.getSourceName() << std::endl;
+    // Display the current GPS time
+    auto gpsTime = gpsTimeSource.getTime();
+    std::time_t timeT = std::chrono::system_clock::to_time_t(gpsTime);
+    std::cout << "Current GPS time: " << std::put_time(std::localtime(&timeT), "%Y-%m-%d %H:%M:%S") << std::endl;
 
     // Create threads
     std::thread clockThread(&Clock::display, &clock);
