@@ -1,0 +1,19 @@
+# Build directory
+build/
+out/
+
+# Prerequisites
+*.d
+
+# Compiled Object files
+*.o
+*.obj
+
+# Executables
+*.exe
+*.out
+*.app
+
+
+# Windows specific
+Thumbs.db
