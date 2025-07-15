@@ -12,7 +12,8 @@
 namespace time_sources {
 
 std::chrono::system_clock::time_point GPSTimeSource::getTime() const {
-
+    // Mocking GPS time source by returning the current system time
+    // In a real implementation, this would query a GPS receiver for the current time.
     return std::chrono::system_clock::now();
 }
 

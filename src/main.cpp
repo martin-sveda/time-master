@@ -8,6 +8,8 @@
 #include "clock/clock.h"
 #include "timer/timer.h"
 #include "time_sources/gps_time_source.h"
+#include "time_sources/ntp_time_source.h"
+
 
 
 using namespace time_sources;
@@ -15,7 +17,10 @@ using namespace time_sources;
 int main() {
     Clock clock;
     Timer timer(clock, 200);
+
+    // Create instances of GPS and NTP time sources
     GPSTimeSource gpsTimeSource;
+    NTPTimeSource ntpTimeSource;
 
 
     // Display the GPS time source name
