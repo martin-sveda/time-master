@@ -23,8 +23,8 @@
 class Timer {
 private:
     Clock& clock;
-    int interval = 200; // Interval in milliseconds
-    bool running = true;
+    int m_intervalNs = 1000000; // Default interval == 1 ms
+    bool m_running = true;
 
 public:
     Timer(Clock& c);

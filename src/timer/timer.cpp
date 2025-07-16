@@ -24,18 +24,18 @@
 
 
 Timer::Timer(Clock& c) : clock(c) {};
-Timer::Timer(Clock& c, int interval) : clock(c), interval(interval) {};
+Timer::Timer(Clock& c, int interval) : clock(c), m_intervalNs(interval) {};
 
 void Timer::run() {
-    while (running) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(interval));
+    while (m_running) {
+        std::this_thread::sleep_for(std::chrono::nanoseconds(m_intervalNs));
         // std::cout << "Timer tick: incrementing clock." << std::endl;
-        clock.increment();
+        clock.tick();
     }
 }
 
 void Timer::stop() {
-    running = false;
+    m_running = false;
 }
 
 

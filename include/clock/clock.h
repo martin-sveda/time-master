@@ -1,19 +1,55 @@
 #pragma once
 
+#include <atomic>
+#include <chrono> 
 #include <mutex>
 #include <condition_variable>
 
 class Clock {
+public:
+    // Structure to hold both time and tick count
+    struct TimeInfo {
+        std::chrono::system_clock::time_point timePoint;    // Current time point
+        uint64_t tickCount;                                 // Number of ticks at this time point
+        uint64_t ppmCorrection;                             // Current PPM correction factor
+    };
+
+    explicit Clock(uint64_t tickPeriodNs);                  // Constructor to initialize the clock with a tick period in nanoseconds
+    
+    // Main interface methods
+    void tick();                                            // Method to increment the tick count (called from mock HW timer)
+    TimeInfo getCurrentTime() const;                        // Method to get the current time and tick count
+    void setInitialTime(const std::chrono::system_clock::time_point& initialTime); // Method to set the initial time of the clock
+    
+    // PPM correction methods
+    void setPPMCorrection(uint64_t ppmCorrection);          // Method to set the PPM correction factor
+    uint64_t getPPMCorrection() const;                      // Method to get the current PPM correction factor
+
+    // Tick information
+    uint64_t getTickCount() const;                          // Method to get the current tick count
+    uint64_t getTickPeriodNs() const;                       // Method to get the tick period in nanoseconds
+
+    void display();
+    void stop();
+
 private:
-    int ticks = 0;
+    // Member variables
+    const uint64_t m_tickPeriodNs;                          // Tick period in nanoseconds
+    std::atomic<uint64_t> m_tickCount;                      // Number of ticks since the clock started
+    std::atomic<uint64_t> m_ppmCorrection;                  // Parts per million correction factor
+    std::chrono::system_clock::time_point m_initialTime;    // Start time of the clock
     bool running = true;
     std::mutex mtx;
     std::condition_variable cv;
     bool new_tick = false;
 
-public:
-    void increment();
-    void display();
-    void stop();
+    // Private methods
+    std::chrono::system_clock::time_point calculateTimeFromTicks(uint64_t ticks) const; // Method to calculate the time point from the tick count   
+
+    // Helper constants
+    static constexpr uint64_t NSEC_PER_SEC = 1000000000ULL; // Nanoseconds per second
+    static constexpr uint64_t PPM_PRECISION = 1000000ULL;   // Precision for PPM calculations (1 million)
+    static constexpr uint64_t PPM_MAX = 500;                // Maximum PPM correction value 
+
 };
 
