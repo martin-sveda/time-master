@@ -18,12 +18,18 @@ public:
     
     // Main interface methods
     void tick();                                            // Method to increment the tick count (called from mock HW timer)
+
     TimeInfo getCurrentTime() const;                        // Method to get the current time and tick count
+    void setTime(const std::chrono::system_clock::time_point& time); // Method to set the current time of the clock
     void setInitialTime(const std::chrono::system_clock::time_point& initialTime); // Method to set the initial time of the clock
+
+    std::chrono::system_clock::time_point getLastSyncedTime() const; // Method to get the last synced time (not implemented in this version)
+    void setLastSyncedTime(const std::chrono::system_clock::time_point& lastSyncedTime); // Method to set the last synced time (not implemented in this version)
     
     // PPM correction methods
     void setPPMCorrection(uint64_t ppmCorrection);          // Method to set the PPM correction factor
     uint64_t getPPMCorrection() const;                      // Method to get the current PPM correction factor
+    //int64_t calculateRequiredPPMcorrection(int64_t timeDifference) const; // Method to calculate the required PPM correction factor
 
     // Tick information
     uint64_t getTickCount() const;                          // Method to get the current tick count
@@ -38,10 +44,13 @@ private:
     std::atomic<uint64_t> m_tickCount;                      // Number of ticks since the clock started
     std::atomic<uint64_t> m_ppmCorrection;                  // Parts per million correction factor
     std::chrono::system_clock::time_point m_initialTime;    // Start time of the clock
+    std::chrono::system_clock::time_point m_time;           // Current time of the clock
+    std::chrono::system_clock::time_point m_lastSyncedTime; // Last synced time
     bool running = true;
     std::mutex mtx;
     std::condition_variable cv;
     bool new_tick = false;
+
 
     // Private methods
     std::chrono::system_clock::time_point calculateTimeFromTicks(uint64_t ticks) const; // Method to calculate the time point from the tick count   

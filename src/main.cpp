@@ -30,6 +30,12 @@ int main() {
     GPSTimeSource gpsTimeSource;
     NTPTimeSource ntpTimeSource;
 
+    // Display the precision of the system clock
+    std::cout << "system_clock precision: "
+              << std::chrono::system_clock::period::num << "/"
+              << std::chrono::system_clock::period::den << " seconds"
+              << std::endl << std::endl;
+
 
     // Display the GPS time source name
     std::cout << "Using time source: " << gpsTimeSource.getSourceName() << std::endl;
@@ -43,7 +49,7 @@ int main() {
     std::thread timerThread(&Timer::run, &timer);
 
     // Let it run for some seconds
-    std::cout << "Internal clock will run for 10 seconds..." << std::endl;
+    std::cout << "Sleep the main thread for 10 seconds and see what will happen with internal clock..." << std::endl;
     std::this_thread::sleep_for(std::chrono::seconds(10));
 
 
@@ -61,6 +67,19 @@ int main() {
     // Display the current time from the GPS time source
     timeT = std::chrono::system_clock::to_time_t(gpsTime);
     std::cout << "Current GPS clock time: " << std::put_time(std::localtime(&timeT), "%Y-%m-%d %H:%M:%S") << std::endl << std::endl;
+
+    // Now I want to see what was the time duration between two GPS time points
+    // and the internal clock time point to see the difference
+    // Then I will calculate the PPM correction factor
+    // and run the clock with this correction factor
+    // and see the difference in the clock time point and set the PPM correction factor again and again
+
+    auto diff = gpsTime - currentTimeInfo.timePoint;
+    
+    std::cout << "Difference between GPS time and INT clock time: " 
+              << std::chrono::duration_cast<std::chrono::nanoseconds>(diff).count() 
+              << " nanoseconds" << std::endl;   
+
 
 
     // Stop the threads

@@ -9,6 +9,8 @@ Clock::Clock(uint64_t tickPeriodNs)
     , m_tickCount(0)
     , m_ppmCorrection(0)
     , m_initialTime(std::chrono::system_clock::now()) 
+    , m_time(m_initialTime)
+    , m_lastSyncedTime(m_initialTime) 
 {
 }   
 
@@ -34,6 +36,21 @@ void Clock::setInitialTime(const std::chrono::system_clock::time_point& initialT
     std::lock_guard<std::mutex> lock(mtx);
     m_initialTime = initialTime;
 }
+
+std::chrono::system_clock::time_point Clock::getLastSyncedTime() const {
+    return m_lastSyncedTime;
+}
+void Clock::setLastSyncedTime(const std::chrono::system_clock::time_point& lastSyncedTime) {
+    std::lock_guard<std::mutex> lock(mtx);
+    m_lastSyncedTime = lastSyncedTime;
+}
+
+void Clock::setTime(const std::chrono::system_clock::time_point& newTime) {
+    std::lock_guard<std::mutex> lock(mtx);
+    m_time = newTime;
+
+}
+
 
 void Clock::setPPMCorrection(uint64_t ppmCorrection) {
     std::lock_guard<std::mutex> lock(mtx);
