@@ -27,7 +27,7 @@ TimeMaster is a hobby project for experimenting with C++ time management, hardwa
 | `include/time_sources/i_time_source.h` | Time source interface.                      |
 | `Makefile`                         | Build instructions for the project.              |
 
-```
+
 
 ## Usage
 
