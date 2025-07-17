@@ -13,6 +13,7 @@
                 "${workspaceFolder}/src/timer/timer.cpp",
                 "${workspaceFolder}/src/time_sources/gps_time_source.cpp",
                 "${workspaceFolder}/src/time_sources/ntp_time_source.cpp",
+                "${workspaceFolder}/src/time_manager/time_manager.cpp",
                 "-I${workspaceFolder}/include",
                 "-o",
                 "build/program"
@@ -31,6 +32,7 @@
                 "${workspaceFolder}/src/timer/timer.cpp",
                 "${workspaceFolder}/src/time_sources/gps_time_source.cpp",
                 "${workspaceFolder}/src/time_sources/ntp_time_source.cpp",
+                "${workspaceFolder}/src/time_manager/time_manager.cpp",
                 "-I${workspaceFolder}/include",
                 "${file}",
                 "-o",

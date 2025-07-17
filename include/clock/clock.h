@@ -5,6 +5,11 @@
 #include <mutex>
 #include <condition_variable>
 
+#include "time_manager/time_manager.h"
+#include "time_sources/i_time_source.h"
+
+using namespace time_sources;
+
 class Clock {
 public:
     // Structure to hold both time and tick count
@@ -14,17 +19,18 @@ public:
         uint64_t ppmCorrection;                             // Current PPM correction factor
     };
 
-    explicit Clock(uint64_t tickPeriodNs);                  // Constructor to initialize the clock with a tick period in nanoseconds
+    explicit Clock(uint64_t tickPeriodNs);                  // Initi clock with a tick period in nanoseconds
+
     
     // Main interface methods
-    void tick();                                            // Method to increment the tick count (called from mock HW timer)
+    void tick() noexcept;                                   // Method to increment the tick count (called from mock HW timer)
 
     TimeInfo getCurrentTime() const;                        // Method to get the current time and tick count
     void setTime(const std::chrono::system_clock::time_point& time); // Method to set the current time of the clock
     void setInitialTime(const std::chrono::system_clock::time_point& initialTime); // Method to set the initial time of the clock
 
-    std::chrono::system_clock::time_point getLastSyncedTime() const; // Method to get the last synced time (not implemented in this version)
-    void setLastSyncedTime(const std::chrono::system_clock::time_point& lastSyncedTime); // Method to set the last synced time (not implemented in this version)
+    std::chrono::system_clock::time_point getLastSyncedTime() const; // Get last synced time
+    void setLastSyncedTime(const std::chrono::system_clock::time_point& lastSyncedTime); // Set last synced time
     
     // PPM correction methods
     void setPPMCorrection(uint64_t ppmCorrection);          // Method to set the PPM correction factor
@@ -35,11 +41,13 @@ public:
     uint64_t getTickCount() const;                          // Method to get the current tick count
     uint64_t getTickPeriodNs() const;                       // Method to get the tick period in nanoseconds
 
-    void display();
+
     void stop();
+    void displayCurrentTime() const;                        // Display current time in a human-readable format
 
 private:
     // Member variables
+
     const uint64_t m_tickPeriodNs;                          // Tick period in nanoseconds
     std::atomic<uint64_t> m_tickCount;                      // Number of ticks since the clock started
     std::atomic<uint64_t> m_ppmCorrection;                  // Parts per million correction factor

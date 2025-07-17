@@ -4,23 +4,25 @@
 #include <chrono>
 #include <thread>
 
+
 Clock::Clock(uint64_t tickPeriodNs)
     : m_tickPeriodNs(tickPeriodNs)
     , m_tickCount(0)
     , m_ppmCorrection(0)
     , m_initialTime(std::chrono::system_clock::now()) 
     , m_time(m_initialTime)
-    , m_lastSyncedTime(m_initialTime) 
-{
-}   
+    , m_lastSyncedTime(m_initialTime)
+{}
 
 
-void Clock::tick() {
-    std::unique_lock<std::mutex> lock(mtx);
-    m_tickCount++;
-    new_tick = true;
-    cv.notify_one();
+
+// ISR safe tick function (no exception)
+void Clock::tick() noexcept {
+
+    m_tickCount.fetch_add(1); // Increment the tick count atomically
 }
+
+
 
 Clock::TimeInfo Clock::getCurrentTime() const {
     TimeInfo info;
@@ -87,15 +89,6 @@ std::chrono::system_clock::time_point Clock::calculateTimeFromTicks(uint64_t tic
 
 
 
-void Clock::display() {
-    while (running) {
-        std::unique_lock<std::mutex> lock(mtx);
-        cv.wait(lock, [this]() { return new_tick || !running; });
-        if (!running) break;
-        std::cout << "Clock ticks: " << m_tickCount << std::endl;
-        new_tick = false;
-    }
-}
 
 void Clock::stop() {
     std::unique_lock<std::mutex> lock(mtx);
@@ -103,3 +96,13 @@ void Clock::stop() {
     cv.notify_one();
 }
 
+
+void Clock::displayCurrentTime() const {
+
+    auto currentTime = getCurrentTime();
+    std::time_t timeT = std::chrono::system_clock::to_time_t(currentTime.timePoint);
+    std::cout << "Current clock time: " 
+              << std::put_time(std::localtime(&timeT), "%Y-%m-%d %H:%M:%S") 
+              << ", Tick Count: " << currentTime.tickCount 
+              << ", PPM Correction: " << currentTime.ppmCorrection << std::endl;
+}
